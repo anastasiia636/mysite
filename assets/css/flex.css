@@ -70,7 +70,7 @@
     z-index: 2;
   }
   
-  /* вертушка рядом с рукой (подстроишь чуть-чуть, если надо) */
+  /* вертушка рядом с рукой  */
   .flex-card.scene.spin .pinwheel{
     position: absolute;
     bottom: 78px;
