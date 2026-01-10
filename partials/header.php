@@ -7,11 +7,18 @@ if (!isset($pageTitle)) {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= htmlspecialchars($pageTitle) ?></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Путь важен: /mysite/... -->
+    <title><?= $pageTitle ?? 'Учебный портал' ?></title>
     <link rel="stylesheet" href="/mysite/assets/css/style.css">
+
+
+<link rel="stylesheet" href="/mysite/assets/css/flex.css">
+<link rel="stylesheet" href="/mysite/assets/css/pic.css">
+
+
+
+
 </head>
+
 <body>
 
 <header class="site-header">
@@ -35,3 +42,4 @@ if (!isset($pageTitle)) {
 
 <main class="site-main">
     <div class="container">
+

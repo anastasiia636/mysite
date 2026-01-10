@@ -1,0 +1,93 @@
+.scene { outline: 6px solid red !important; }
+
+.flex-stage{
+    display: flex;
+    justify-content: center;
+    margin: 18px 0;
+  }
+  
+  .flex-card.scene{
+    width: 200px;
+    height: 200px;
+    display: flex;           /* flexbox по заданию */
+    position: relative;
+    overflow: hidden;
+  
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+  
+    /* ШКАФ как фон */
+    background: url("/mysite/assets/img/toy1.jpg") center / cover no-repeat;
+  }
+  
+  /* Мальчик — уменьшить и спрятать слева */
+  .flex-card.scene .boy{
+    position: absolute;
+    bottom: 8px;
+    left: -120px;            /* старт слева за кадром */
+    width: 90px;            /* КЛЮЧЕВО: размер! */
+    height: auto;
+    z-index: 2;
+  
+    transform: translateX(0);
+    transition: transform 3s linear;
+  }
+  
+  /* При наведении бежит через весь блок */
+  .flex-card.scene:hover .boy{
+    transform: translateX(360px);
+  }
+  .flex-card.scene .boy{
+    display: block;
+  }
+  /* два блока рядом */
+.flex-row{
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  
+  /* общая сцена */
+  .flex-card.scene{
+    width: 200px;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    background: url("/mysite/assets/img/toy1.jpg") center / cover no-repeat;
+  }
+ 
+  
+  /* === СЦЕНА 2 (вертушка) === */
+  .flex-card.scene.spin .boy-stand{
+    position: absolute;
+    bottom: 4px;
+    left: 60px;
+    width: 95px;
+    height: auto;
+    z-index: 2;
+  }
+  
+  /* вертушка рядом с рукой (подстроишь чуть-чуть, если надо) */
+  .flex-card.scene.spin .pinwheel{
+    position: absolute;
+    bottom: 78px;
+    left: 120px;
+    width: 42px;
+    height: 42px;
+    z-index: 3;
+    transform-origin: 50% 50%;
+  }
+  
+  /* вращение только пока держим нажатие */
+  @keyframes spinWheel {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  
+  .flex-card.scene.spin.is-pressed .pinwheel{
+    animation: spinWheel 0.25s linear infinite;
+  }
+  .flex-card.scene.spin.is-pressed{
+    filter: sepia(1);
+  } 

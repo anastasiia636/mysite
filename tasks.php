@@ -13,20 +13,90 @@ include __DIR__ . "/partials/header.php";
         <h2>Задание 1. Простая HTML-страница</h2>
         <p>Создайте страницу с заголовком, несколькими абзацами текста и изображением. Проверьте корректность отображения в разных браузерах.</p>
     </article>
+
     <article class="task-card">
-        <h2>Задание 2. Адаптивная верстка</h2>
-        <p>Сверстайте блок из текста и картинок так, чтобы на широком экране элементы располагались в две колонки, а на телефоне — в одну.</p>
+    <h2>Задание 2. Адаптивная верстка</h2>
+    <div class="pic-wrap">
+  <div class="pic">
+    <div class="chair left">
+      <div class="back"></div>
+      <div class="seat"></div>
+      <div class="leg"></div>
+    </div>
+
+    <div class="chair right">
+      <div class="back"></div>
+      <div class="seat"></div>
+      <div class="leg"></div>
+    </div>
+
+    <div class="table">
+      <div class="top"></div>
+      <div class="stem"></div>
+      <div class="base"></div>
+    </div>
+
+    <div class="teapot">
+      <div class="body"></div>
+      <div class="lid"></div>
+      <div class="knob"></div>
+      <div class="spout"></div>
+      <div class="handle"></div>
+    </div>
+  </div>
+
+  <div class="pic-caption">Рисунок выполнен средствами CSS (200×200)</div>
+</div>
+
     </article>
+
     <article class="task-card">
         <h2>Задание 3. Общие части сайта на PHP</h2>
         <p>Вынесите шапку, меню и подвал в отдельные файлы PHP и подключайте их на всех страницах портала.</p>
     </article>
+
     <article class="task-card">
         <h2>Задание 4. Работа с JavaScript</h2>
         <p>Добавьте на сайт небольшой скрипт: например, обработку клика по кнопке, плавную прокрутку или вывод текущей даты.</p>
     </article>
-</section>
 
-<?php
-include __DIR__ . "/partials/footer.php";
-?>
+    <article class="task-card">
+        <h2>Задание 5. Flexbox (Вариант 3)</h2>
+        <p>Фон — шкаф. При наведении мальчик медленно выбегает слева направо поверх фона.</p>
+
+        <div class="flex-stage">
+            <div class="flex-card scene" aria-label="Flexbox элемент">
+                <img class="boy" src="/mysite/assets/img/toy2.png" alt="Бегущий мальчик">
+            </div>
+        </div>
+        <div class="flex-stage flex-row">
+ 
+
+  <!-- Блок 2: стоящий мальчик + вертушка крутится при удержании -->
+  <div class="flex-card scene spin" id="spinScene" aria-label="Сцена: вертушка">
+    <img class="boy-stand" src="/mysite/assets/img/toy3.png" alt="Мальчик стоит">
+    <img class="pinwheel" src="/mysite/assets/img/toy5.png" alt="Вертушка">
+  </div>
+</div>
+
+    </article>
+</section>
+<script>
+  const spinScene = document.getElementById('spinScene');
+  if (spinScene) {
+    const pressOn  = () => spinScene.classList.add('is-pressed');
+    const pressOff = () => spinScene.classList.remove('is-pressed');
+
+    // мышь
+    spinScene.addEventListener('mousedown', pressOn);
+    window.addEventListener('mouseup', pressOff);
+    spinScene.addEventListener('mouseleave', pressOff);
+
+    // тач (телефон)
+    spinScene.addEventListener('touchstart', pressOn, {passive:true});
+    window.addEventListener('touchend', pressOff);
+  }
+</script>
+
+
+<?php include __DIR__ . "/partials/footer.php"; ?>
