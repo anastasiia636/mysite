@@ -19,7 +19,7 @@
   position: relative;
 }
 
-/* ====== ЦВЕТА ====== */
+/* ЦВЕТА */
 :root{
   --wood: #c97a2c;
   --wood-dark: #a86022;
@@ -31,7 +31,7 @@
   --pink3: #e34a78;
 }
 
-/* ====== СТОЛ ====== */
+/* СТОЛ */
 .table{
   position:absolute;
   left:50%;
@@ -59,7 +59,7 @@
   transform: translateX(-50%);
 }
 
-/* убираем декоративные элементы */
+
 .table .stem::before,
 .table .stem::after{
   display: none;
@@ -76,7 +76,7 @@
   clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 }
 
-/* ====== ЧАЙНИК (ближе к рефу #2) ====== */
+/* ЧАЙНИК */
 .teapot{
   position: absolute;
   left: 50%;
@@ -86,7 +86,7 @@
   z-index: 1;
 }
 
-/* ТЕЛО (должно быть ВЫШЕ крышки) */
+/* ТЕЛО  */
 .teapot .body{
   position: relative;
   width: 92px;
@@ -102,20 +102,20 @@
   );
 }
 
-/* убираем лишние элементы */
+
 .teapot .body::before,
 .teapot .body::after{
   display: none;
 }
 
-/* КРЫШКА (должна быть ПОД телом, чтобы тело перекрывало низ крышки) */
+/* КРЫШКА  */
 .teapot .lid{
   position: absolute;
   left: 22px;
   top: -34px;
   width: 62px;
   height: 46px;
-  z-index: 2; /* ключевое: ниже body */
+  z-index: 2; 
 
   border-radius: 50%;
   background: radial-gradient(circle at 30% 25%,
@@ -129,7 +129,7 @@
     0 2px 0 rgba(0,0,0,.04);
 }
 
-/* КНОПКА (выше всех) */
+/* КНОПКА  */
 .teapot .knob{
   position: absolute;
   left: 49px;
@@ -147,26 +147,26 @@
   box-shadow: 0 2px 0 rgba(0,0,0,.06);
 }
 
-/* НОСИК (меньше и СМОТРИТ ВВЕРХ) */
+/* НОСИК */
 .teapot .spout{
   position: absolute;
   left: -38px;
   top: 26px;
   width: 44px;
   height: 16px;
-  z-index: 2; /* под телом, как в рефе */
+  z-index: 2; 
 
   background: linear-gradient(to bottom, rgb(235, 135, 155), rgb(226, 55, 89));
   border-radius: 3px;
 
 
-  transform: rotate(28deg); /* сильнее вверх */
+  transform: rotate(28deg); 
   transform-origin: right center;
 
   box-shadow: inset 0 -2px 0 rgba(0,0,0,.08);
 }
 
-/* РУЧКА (за телом, светлее) */
+/* РУЧКА  */
 .teapot .handle{
   position: absolute;
   right: -20px;
@@ -183,9 +183,9 @@
 
 
 
-/* ===================== */
-/*   БАЗОВЫЙ СТУЛ        */
-/* ===================== */
+
+/*   СТУЛ   */
+
 .pic .chair{
   position: absolute;
   top: 60px;
@@ -213,20 +213,20 @@
 .pic .chair.left{ left: -50px; }
 .pic .chair.right{ right: 80px; }
 
-/* зеркалим ТОЛЬКО дугу */
+/* зеркалим дугу */
 .pic .chair.right::before{
   transform: rotate(180deg) scaleX(-1);
 }
 
 
 
-/* 🔹 ЛЕВАЯ ДУГА */
+/*  ЛЕВАЯ ДУГА */
 .pic .chair.left::before{
   left: -18px;   /* ← двигай ВЛЕВО / ВПРАВО */
   top: -9px;     /* ← двигай ВВЕРХ / ВНИЗ */
 }
 
-/* 🔹 ПРАВАЯ ДУГА */
+/*  ПРАВАЯ ДУГА */
 .pic .chair.right::before{
   left: 88px;    /* ← независимо от левой */
   top: -9px;
@@ -238,7 +238,7 @@
 
 
 
-/* сиденье длиннее */
+/* сиденье  */
 .pic .chair .seat{
   position:absolute;
   left: 40px;
@@ -249,7 +249,7 @@
   border-radius: 2px;
 }
 
-/* болтики (3) */
+/* болтики  */
 .pic .chair .seat::before{
   content:"";
   position:absolute;

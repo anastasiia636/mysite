@@ -17,7 +17,8 @@
     box-shadow: 0 10px 25px rgba(0,0,0,.12);
   
     /* ШКАФ как фон */
-    background: url("/mysite/assets/img/toy1.jpg") center / cover no-repeat;
+    background: url("../img/toy1.jpg") center / cover no-repeat;
+
   }
   
   /* Мальчик — уменьшить и спрятать слева */
@@ -25,7 +26,7 @@
     position: absolute;
     bottom: 8px;
     left: -120px;            /* старт слева за кадром */
-    width: 90px;            /* КЛЮЧЕВО: размер! */
+    width: 90px;            /* размер */
     height: auto;
     z-index: 2;
   
@@ -54,11 +55,12 @@
     overflow: hidden;
     border-radius: 18px;
     box-shadow: 0 10px 25px rgba(0,0,0,.12);
-    background: url("/mysite/assets/img/toy1.jpg") center / cover no-repeat;
+    background: url("../img/toy1.jpg") center / cover no-repeat;
+
   }
  
   
-  /* === СЦЕНА 2 (вертушка) === */
+  /*СЦЕНА 2 (вертушка) */
   .flex-card.scene.spin .boy-stand{
     position: absolute;
     bottom: 4px;
