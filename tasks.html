@@ -90,10 +90,36 @@
         <p>Вынесите шапку, меню и подвал в отдельные файлы PHP и подключайте их на всех страницах портала.</p>
       </article>
 
-      <article class="task-card">
+      <article class="task-card" id="task4">
         <h2>Задание 4. Работа с JavaScript</h2>
-        <p>Добавьте на сайт небольшой скрипт: например, обработку клика по кнопке, плавную прокрутку или вывод текущей даты.</p>
+        <p>Работа с массивами, классами CSS, генерацией элементов и обработчиками событий.</p>
+      
+        <!-- Подблок 4.1 -->
+        <section class="task4-block">
+          <h3>4.1 Случайные фразы + чередование классов</h3>
+      
+          <div class="task4-controls">
+            <button type="button" id="btnShowPhrase">Показать фразу</button>
+            <button type="button" id="btnRecolor">Перекрасить</button>
+          </div>
+      
+          <div class="task4-output" id="phrasesOutput" aria-live="polite"></div>
+        </section>
+      
+        <!-- Подблок 4.2 -->
+        <section class="task4-block task4-grid">
+          <div>
+            <h3>4.2 Многоуровневый список в aside</h3>
+            <p>По кнопке «Создать» добавляется пункт: латинская фраза + вложенный перевод.</p>
+            <button type="button" id="btnCreateListItem">Создать</button>
+          </div>
+      
+          <aside class="task4-aside" aria-label="Список фраз (aside)">
+            <ol id="phrasesList"></ol>
+          </aside>
+        </section>
       </article>
+      
 
       <article class="task-card">
         <h2>Задание 5. Flexbox (Вариант 3)</h2>

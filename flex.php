@@ -15,13 +15,13 @@ include __DIR__ . "/partials/header.php";
         <div class="label">Игрушки оптом</div>
         </div>
 
-        <!-- HOVER -->
+        
         <div class="state state-hover">
         <img src="/mysite/assets/img/toy2.png" alt="Забегает мальчик">
         <div class="label">Забегает, замедляясь, мальчик</div>
         </div>
 
-        <!-- CLICK -->
+        <!-- КЛИК -->
         <div class="state state-click">
         <img src="/mysite/assets/img/toy5.png" alt="Вертушка">
             <div class="label">

@@ -42,7 +42,7 @@ img {
     padding: 12px 0;
 }
 
-/* ЛОГОТИП НА CSS */
+/* ЛОГОТИП */
 
 .logo {
     display: flex;
@@ -292,4 +292,74 @@ img {
       gap: 12px;
     }
   } 
+  
+
+  /* ===== Task 4 blocks ===== */
+#task4 .task4-block{
+    margin-top: 14px;
+    padding: 12px 12px;
+    border-radius: 12px;
+    background: #f9fafb;
+    box-shadow: inset 0 0 0 1px rgba(15,23,42,.06);
+  }
+  
+  #task4 .task4-controls{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0 12px;
+  }
+  
+  #task4 button{
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: #111827;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  #task4 button:hover{ opacity: .92; }
+  
+  #task4 .task4-output{
+    display: grid;
+    gap: 10px;
+  }
+  
+  #task4 .phrase-row{
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  
+  #task4 .class1{ background: #dbeafe; }  /* голубой фон */
+  #task4 .class2{ background: #fee2e2; }  /* розовый фон */
+  
+  #task4 .task4-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+  
+  #task4 .task4-aside{
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  
+  #task4 .task4-aside ol{
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  #task4 .task4-aside ul{
+    margin: 6px 0 0;
+    padding-left: 18px;
+  }
+  
+  @media (max-width: 768px){
+    #task4 .task4-grid{ grid-template-columns: 1fr; }
+  }
   
