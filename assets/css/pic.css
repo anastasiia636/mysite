@@ -1,3 +1,9 @@
+/* ============================================
+   CSS-рисунок: стол с чайником и два стула
+   Размер сцены: 200×200 пикселей
+   ============================================ */
+
+/* Обёртка для рисунка - центрирует картинку и подпись */
 .pic-wrap{
   margin: 18px 0 22px;
   display: flex;
@@ -6,40 +12,52 @@
   gap: 10px;
 }
 
+/* Подпись под рисунком */
 .pic-caption{
   font-size: 14px;
   opacity: 0.75;
   text-align: center;
 }
 
-/* сцена 200x200 */
+/* Сцена - контейнер для всех элементов рисунка */
 .pic{
   width: 200px;
   height: 200px;
   position: relative;
 }
 
-/* ЦВЕТА */
-:root{
-  --wood: #c97a2c;
-  --wood-dark: #a86022;
-  --wood-mid: #b96b25;
-  --bolt: #7a3f13;
 
-  --pink1: #ffe1ea;
-  --pink2: #f58aa6;
-  --pink3: #e34a78;
+/* ============================================
+   ЦВЕТОВАЯ ПАЛИТРА
+   Здесь храню все цвета, чтобы легко менять
+   ============================================ */
+:root{
+  /* Цвета дерева (стол, стулья) */
+  --wood: #c97a2c;        /* основной цвет дерева */
+  --wood-dark: #a86022;   /* тёмный оттенок */
+  --wood-mid: #b96b25;    /* средний оттенок */
+  --bolt: #7a3f13;        /* цвет болтиков на сиденье */
+
+  /* Цвета чайника (розовые оттенки) */
+  --pink1: #ffe1ea;       /* самый светлый */
+  --pink2: #f58aa6;       /* средний */
+  --pink3: #e34a78;       /* тёмный */
 }
 
-/* СТОЛ */
+
+/* ============================================
+   СТОЛ
+   Состоит из: столешница (.top) + ножка (.stem) + основание (.base)
+   ============================================ */
 .table{
   position:absolute;
   left:50%;
   top: 92px;
-  transform:translateX(-50%);
-  z-index: 10;
+  transform:translateX(-50%);  /* центрирую по горизонтали */
+  z-index: 10;                 /* стол поверх чайника */
 }
 
+/* Столешница - горизонтальная планка */
 .table .top{
   width: 140px;
   height: 12px;
@@ -49,6 +67,7 @@
   z-index: 10;
 }
 
+/* Ножка стола - вертикальная часть */
 .table .stem{
   position: absolute;
   left: 50%;
@@ -59,12 +78,13 @@
   transform: translateX(-50%);
 }
 
-
+/* Убираю декоративные элементы на ножке (не нужны) */
 .table .stem::before,
 .table .stem::after{
   display: none;
 }
 
+/* Основание стола - треугольник внизу */
 .table .base{
   position:absolute;
   left:50%;
@@ -73,20 +93,24 @@
   width: 50px;
   height: 30px;
   background: var(--wood);
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);  /* треугольная форма */
 }
 
-/* ЧАЙНИК */
+
+/* ============================================
+   ЧАЙНИК
+   Состоит из: тело + крышка + кнопка + носик + ручка
+   ============================================ */
 .teapot{
   position: absolute;
   left: 50%;
   top: 48px;
-  transform: translateX(-50%) scale(0.72);
+  transform: translateX(-50%) scale(0.72);  /* уменьшаю до 72% */
   transform-origin: top center;
-  z-index: 1;
+  z-index: 1;  /* чайник ПОД столом */
 }
 
-/* ТЕЛО  */
+/* Тело чайника - основной шар с градиентом */
 .teapot .body{
   position: relative;
   width: 92px;
@@ -94,30 +118,32 @@
   border-radius: 50%;
   z-index: 3;
 
+  /* Радиальный градиент: светлый слева-сверху → тёмный по краям */
   background: radial-gradient(circle at 30% 35%,
-    rgb(245, 214, 219) 0%,
+    rgb(245, 214, 219) 0%,      /* светлый центр */
     rgb(245, 214, 219) 20%,
-    rgb(235, 135, 155) 45%,
-    rgb(226, 55, 89) 75%
+    rgb(235, 135, 155) 45%,     /* переход */
+    rgb(226, 55, 89) 75%        /* тёмные края */
   );
 }
 
-
+/* Убираю блик и тень (не нужны для плоского стиля) */
 .teapot .body::before,
 .teapot .body::after{
   display: none;
 }
 
-/* КРЫШКА  */
+/* Крышка чайника - овал сверху */
 .teapot .lid{
   position: absolute;
   left: 22px;
   top: -34px;
   width: 62px;
   height: 46px;
-  z-index: 2; 
+  z-index: 2;  /* крышка ПОД телом */
 
   border-radius: 50%;
+  /* Градиент: светлый сверху-слева → тёмный снизу */
   background: radial-gradient(circle at 30% 25%,
     rgb(245, 214, 219) 0%,
     rgb(235, 135, 155) 25%,
@@ -129,14 +155,14 @@
     0 2px 0 rgba(0,0,0,.04);
 }
 
-/* КНОПКА  */
+/* Кнопка на крышке - маленький шарик сверху */
 .teapot .knob{
   position: absolute;
   left: 49px;
   top: -40px;
   width: 10px;
   height: 8px;
-  z-index: 4;
+  z-index: 4;  /* кнопка выше всех */
 
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%,
@@ -147,58 +173,57 @@
   box-shadow: 0 2px 0 rgba(0,0,0,.06);
 }
 
-/* НОСИК */
+/* Носик чайника - слева, смотрит вверх */
 .teapot .spout{
   position: absolute;
   left: -38px;
   top: 26px;
   width: 44px;
   height: 16px;
-  z-index: 2; 
+  z-index: 2;
 
   background: linear-gradient(to bottom, rgb(235, 135, 155), rgb(226, 55, 89));
   border-radius: 3px;
 
-
-  transform: rotate(28deg); 
+  transform: rotate(28deg);  /* поворачиваю вверх */
   transform-origin: right center;
 
   box-shadow: inset 0 -2px 0 rgba(0,0,0,.08);
 }
 
-/* РУЧКА  */
+/* Ручка чайника - справа, полукруг */
 .teapot .handle{
   position: absolute;
   right: -20px;
   top: 8px;
   width: 30px;
   height: 40px;
-  z-index: 1;
+  z-index: 1;  /* ручка за телом */
 
   border: 8px solid rgb(226, 55, 89);
-  border-left: none;
+  border-left: none;  /* убираю левую часть, чтобы был полукруг */
   border-radius: 100%;
   transform: rotate(10deg);
 }
 
 
-
-
-/*   СТУЛ   */
+/* ============================================
+   СТУЛЬЯ
+   Два стула: левый и правый
+   Каждый состоит из: спинка (дуга) + сиденье + ножка
+   ============================================ */
 
 .pic .chair{
   position: absolute;
   top: 60px;
 }
 
-/* ДУГА (ОБЩАЯ) */
+/* Спинка стула - изогнутая дуга (общий стиль) */
 .pic .chair::before{
   content:"";
   position: absolute;
-
   top: 10px;
   left: -12px;
-
   width: 60px;
   height: 150px;
 
@@ -209,36 +234,28 @@
   box-sizing: border-box;
 }
 
-/* позиции стульев */
+/* Позиции стульев относительно сцены */
 .pic .chair.left{ left: -50px; }
 .pic .chair.right{ right: 80px; }
 
-/* зеркалим дугу */
+/* Правый стул - зеркалю спинку */
 .pic .chair.right::before{
   transform: rotate(180deg) scaleX(-1);
 }
 
-
-
-/*  ЛЕВАЯ ДУГА */
+/* Тонкая настройка позиции левой спинки */
 .pic .chair.left::before{
-  left: -18px;   /* ← двигай ВЛЕВО / ВПРАВО */
-  top: -9px;     /* ← двигай ВВЕРХ / ВНИЗ */
-}
-
-/*  ПРАВАЯ ДУГА */
-.pic .chair.right::before{
-  left: 88px;    /* ← независимо от левой */
+  left: -18px;
   top: -9px;
 }
 
+/* Тонкая настройка позиции правой спинки */
+.pic .chair.right::before{
+  left: 88px;
+  top: -9px;
+}
 
-
-
-
-
-
-/* сиденье  */
+/* Сиденье стула - горизонтальная планка */
 .pic .chair .seat{
   position:absolute;
   left: 40px;
@@ -249,7 +266,7 @@
   border-radius: 2px;
 }
 
-/* болтики  */
+/* Болтики на сиденье - 3 точки */
 .pic .chair .seat::before{
   content:"";
   position:absolute;
@@ -259,11 +276,11 @@
   height: 5px;
   border-radius: 50%;
   background:#7a3f13;
-  box-shadow: 14px 0 0 #7a3f13, 28px 0 0 #7a3f13;
+  box-shadow: 14px 0 0 #7a3f13, 28px 0 0 #7a3f13;  /* ещё 2 точки через тень */
   opacity: .85;
 }
 
-/* ножка под сиденьем */
+/* Ножка стула - вертикальная планка под сиденьем */
 .pic .chair .leg{
   position:absolute;
   left: 60px;
@@ -273,4 +290,3 @@
   background:#a86022;
   border-radius: 1px;
 }
-
