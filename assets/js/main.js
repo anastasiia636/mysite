@@ -1,7 +1,7 @@
 console.log("Учебный портал загружен");
 
 (() => {
-    // Исходные массивы (можешь расширять)
+    // ====== Исходные фразы ======
     const latin = [
       "Consuetudo est altera natura",
       "Nota bene",
@@ -16,49 +16,73 @@ console.log("Учебный портал загружен");
       "Через тернии к звёздам"
     ];
   
-    // Пары (латынь+перевод)
     const pairs = latin.map((text, i) => ({
       latin: text,
       ru: translations[i] ?? ""
     }));
   
-    // Перемешанный порядок без повторов
-    let order = [...pairs.keys()];
-    shuffle(order);
-  
-    let clickCount = 0;      // для чёт/нечёт нажатия
-    let cursor = 0;          // указатель на текущую фразу из order
-  
-    // Элементы
+    // ====== DOM ======
     const btnShow = document.getElementById("btnShowPhrase");
     const btnRecolor = document.getElementById("btnRecolor");
+    const btnRestart = document.getElementById("btnRestartPhrases");
     const out = document.getElementById("phrasesOutput");
   
     const btnCreate = document.getElementById("btnCreateListItem");
     const list = document.getElementById("phrasesList");
   
-    // Если мы не на странице tasks.html — просто выходим
-    if (!btnShow || !btnRecolor || !out || !btnCreate || !list) return;
+    // если мы не на tasks-странице — выходим
+    if (!btnShow || !btnRecolor || !btnRestart || !out || !btnCreate || !list) return;
   
-    // --- handlers ---
+    // ====== Независимые очереди ======
+    let orderA = [];
+    let cursorA = 0;
+    let clickCountA = 0;     // чтобы чередовать class1/class2
+    let boldEnabled = false; // тумблер для "Перекрасить"
   
-    // 4.1 Показать фразу
+    let orderB = [];
+    let cursorB = 0;
+  
+    // ====== init/reset ======
+    function resetAll() {
+      // очистить выводы
+      out.innerHTML = "";
+      list.innerHTML = "";
+  
+      // заново перемешать две независимые очереди
+      orderA = [...pairs.keys()];
+      orderB = [...pairs.keys()];
+      shuffle(orderA);
+      shuffle(orderB);
+  
+      // сбросить счётчики
+      cursorA = 0;
+      cursorB = 0;
+      clickCountA = 0;
+  
+      // выключить жирность (по умолчанию)
+      boldEnabled = false;
+      btnRecolor.textContent = "Перекрасить";
+    }
+  
+    resetAll();
+  
+    // ====== 4.1 Показать фразу ======
     btnShow.addEventListener("click", () => {
-      if (cursor >= order.length) {
+      if (cursorA >= orderA.length) {
         alert("Фразы закончились");
         return;
       }
   
-      clickCount += 1;
+      clickCountA += 1;
   
-      const idx = order[cursor];
-      cursor += 1;
+      const idx = orderA[cursorA];
+      cursorA += 1;
   
       const pair = pairs[idx];
   
       const row = document.createElement("div");
       row.classList.add("phrase-row");
-      row.classList.add(clickCount % 2 === 0 ? "class1" : "class2");
+      row.classList.add(clickCountA % 2 === 0 ? "class1" : "class2");
   
       row.innerHTML = `
         <div><strong>${escapeHtml(pair.latin)}</strong></div>
@@ -66,26 +90,44 @@ console.log("Учебный портал загружен");
       `;
   
       out.appendChild(row);
+  
+      // если жирность включена — применяем её сразу и к новым строкам
+      if (boldEnabled) applyBoldToEvenRows(true);
     });
   
-    // 4.1 Перекрасить: у всех чётных строк (2,4,6...) сделать жирный
+    // ====== 4.1 Перекрасить (тумблер) ======
     btnRecolor.addEventListener("click", () => {
+      boldEnabled = !boldEnabled;
+      applyBoldToEvenRows(boldEnabled);
+  
+      // можно подсказать состоянием текста кнопки
+      btnRecolor.textContent = boldEnabled ? "Перекрасить (выкл.)" : "Перекрасить";
+    });
+  
+    function applyBoldToEvenRows(isOn) {
       const rows = out.querySelectorAll(".phrase-row");
       rows.forEach((el, i) => {
         const humanIndex = i + 1; // 1..n
-        if (humanIndex % 2 === 0) el.style.fontWeight = "700";
+        if (humanIndex % 2 === 0) {
+          el.style.fontWeight = isOn ? "700" : "";
+        }
       });
+    }
+  
+    // ====== 4.1 Начать сначала ======
+    btnRestart.addEventListener("click", () => {
+      resetAll();
     });
   
-    // 4.2 Создать пункт списка в aside (многоуровневый)
+    // ====== 4.2 Создать пункт списка (НЕЗАВИСИМО) ======
     btnCreate.addEventListener("click", () => {
-      if (cursor >= order.length) {
+      if (cursorB >= orderB.length) {
         alert("Фразы закончились");
         return;
       }
   
-      const idx = order[cursor];
-      cursor += 1;
+      const idx = orderB[cursorB];
+      cursorB += 1;
   
       const pair = pairs[idx];
   
@@ -101,7 +143,7 @@ console.log("Учебный портал загружен");
       list.appendChild(li);
     });
   
-    // --- utils ---
+    // ===== utils =====
     function shuffle(arr) {
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
