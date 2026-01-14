@@ -33,35 +33,37 @@
   <div class="container">
 
     <h1>Задание Flexbox (Вариант 3)</h1>
-    <p>Элемент flexbox размером не более 200×200. Состояния: обычное, при наведении и при нажатии.</p>
+<p>Элемент flexbox размером не более 200×200. Состояния: обычное, при наведении и при нажатии.</p>
 
-    <div class="flex-stage">
-      <div class="flex-card" id="flexCard" tabindex="0">
-        <div class="state state-default">
-          <img src="assets/img/toy1.jpg" alt="Игрушки оптом">
-          <div class="label">Игрушки оптом</div>
-        </div>
-        <div class="state state-hover">
-          <img src="assets/img/toy2.png" alt="Забегает мальчик">
-          <div class="label">Забегает, замедляясь, мальчик</div>
-        </div>
-        <div class="state state-click">
-          <img src="assets/img/toy5.png" alt="Вертушка">
-          <div class="label">У мальчика в руках вертушка,<br>крутится вокруг своей оси</div>
-        </div>
-      </div>
-    </div>
+<!-- Блок 1: мальчик бежит при наведении -->
+<div class="flex-stage">
+  <div class="flex-card scene" aria-label="Flexbox элемент">
+    <img class="boy" src="assets/img/toy2.png" alt="Бегущий мальчик">
+  </div>
+</div>
 
-    <script>
-      const card = document.getElementById('flexCard');
-      card.addEventListener('click', () => card.classList.toggle('is-clicked'));
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          card.classList.toggle('is-clicked');
-        }
-      });
-    </script>
+<!-- Блок 2: вертушка крутится при нажатии -->
+<div class="flex-stage flex-row">
+  <div class="flex-card scene spin" id="spinScene" aria-label="Сцена: вертушка">
+    <img class="boy-stand" src="assets/img/toy3.png" alt="Мальчик стоит">
+    <img class="pinwheel" src="assets/img/toy5.png" alt="Вертушка">
+  </div>
+</div>
+
+<script>
+  const spinScene = document.getElementById('spinScene');
+  if (spinScene) {
+    const pressOn  = () => spinScene.classList.add('is-pressed');
+    const pressOff = () => spinScene.classList.remove('is-pressed');
+
+    spinScene.addEventListener('mousedown', pressOn);
+    window.addEventListener('mouseup', pressOff);
+    spinScene.addEventListener('mouseleave', pressOff);
+
+    spinScene.addEventListener('touchstart', pressOn, {passive:true});
+    window.addEventListener('touchend', pressOff);
+  }
+</script>
 
   </div>
 </main>
