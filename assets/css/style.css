@@ -195,9 +195,10 @@ img {
 
 .tasks-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(3, 1fr);    /* 3 равные колонки */
     gap: 16px;
-    justify-content: center;
+    max-width: 1200px;                         /* ограничить ширину */
+    margin: 0 auto;                            /* центрировать */
     align-items: start;
 }
 
