@@ -35,6 +35,7 @@ if (!isset($pageTitle)) {
                 <li><a href="/mysite/index.php">Главная</a></li>
                 <li><a href="/mysite/tasks.php">Задания</a></li>
                 <li><a href="/mysite/coursework.php">Курсовая</a></li>
+                <li><a href="/mysite/coursework.php">Flexbox</a></li>
             </ul>
         </nav>
     </div>
