@@ -208,6 +208,17 @@ img {
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   
 }
+.task-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+}
+
+/* Задание 4 на всю ширину */
+#task4 {
+    grid-column: 1 / -1;
+}
 
 /* COURSEWORK */
 
