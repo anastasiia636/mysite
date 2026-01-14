@@ -208,12 +208,7 @@ img {
     box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   
 }
-.task-card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 14px 16px;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
-}
+
 
 /* Задание 4 на всю ширину */
 #task4 {
@@ -291,21 +286,6 @@ img {
   .coursework-content:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); /* усиливаем тень при наведении */
   }
-  
-  /* Отступы для секций */
-  .page-title,
-  .info-section,
-  .page-title + .tasks-list {
-    margin-top: 32px;
-    margin-bottom: 32px;
-  }
-  
-  /* Центрируем мобильное меню */
-  @media (max-width: 768px) {
-    .main-nav ul {
-      gap: 12px;
-    }
-  } 
   
 
   /* ===== Task 4 blocks ===== */
