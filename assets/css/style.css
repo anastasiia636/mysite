@@ -300,10 +300,11 @@ img {
   /* ===== Task 4 blocks ===== */
 #task4 .task4-block{
     margin-top: 14px;
-    padding: 122px 122px;
+    padding: 20px;
     border-radius: 12px;
     background: #f9fafb;
     box-shadow: inset 0 0 0 1px rgba(15,23,42,.06);
+    text-align: left;
   }
   
   #task4 .task4-controls{
