@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Задание: Собери домик — Учебный портал</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* ===== Стили для пазла ===== */
+    .puzzle-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .puzzle-area {
+      width: 400px;
+      height: 300px;
+      border: 4px solid #e67e00;
+      border-radius: 12px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .puzzle-area h3 {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 0;
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+    }
+
+    /* Перетаскиваемые фигуры */
+    .shape {
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      transition: box-shadow 0.2s;
+    }
+
+    .shape:active {
+      cursor: grabbing;
+    }
+
+    .shape:hover {
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Базовые фигуры */
+    .square {
+      width: 80px;
+      height: 80px;
+      background: #e74c3c;
+    }
+
+    .triangle-roof {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 60px solid #8b4513;
+    }
+
+    .triangle-tree-1 {
+      width: 0;
+      height: 0;
+      border-left: 45px solid transparent;
+      border-right: 45px solid transparent;
+      border-bottom: 55px solid #228b22;
+    }
+
+    .triangle-tree-2 {
+      width: 0;
+      height: 0;
+      border-left: 55px solid transparent;
+      border-right: 55px solid transparent;
+      border-bottom: 65px solid #2e8b2e;
+    }
+
+    .triangle-tree-3 {
+      width: 0;
+      height: 0;
+      border-left: 65px solid transparent;
+      border-right: 65px solid transparent;
+      border-bottom: 70px solid #1e6b1e;
+    }
+
+    .rect-trunk {
+      width: 20px;
+      height: 35px;
+      background: #8b4513;
+    }
+
+    .rect-window {
+      width: 25px;
+      height: 25px;
+      background: #3498db;
+      border: 2px solid #2980b9;
+    }
+
+    /* Кнопка поворота */
+    .rotate-btn {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 24px;
+      height: 24px;
+      background: #333;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .shape:hover .rotate-btn {
+      opacity: 1;
+    }
+
+    /* Анимация победы */
+    @keyframes celebrate {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes confetti {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-100px) rotate(720deg); }
+    }
+
+    .puzzle-area.success {
+      animation: celebrate 0.5s ease 3;
+      border-color: #27ae60;
+      box-shadow: 0 0 30px rgba(39, 174, 96, 0.5);
+    }
+
+    .success-message {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #27ae60;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      z-index: 100;
+    }
+
+    .puzzle-area.success .success-message {
+      display: block;
+      animation: celebrate 0.5s ease infinite;
+    }
+
+    /* Кнопка сброса */
+    .reset-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 30px;
+      background: #e67e00;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .reset-btn:hover {
+      background: #d35400;
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-shape"><span class="logo-text">WP</span></div>
+      <span class="logo-title">WebPortal</span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="tasks.html">Задания</a></li>
+        <li><a href="coursework.html">Курсовая</a></li>
+        <li><a href="flex.html">Flexbox</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main class="site-main">
+  <div class="container">
+    <h1>Задание: Собери домик</h1>
+    <p>Перетащите фигуры и соберите домик с ёлкой. Нажмите на кнопку ↻ чтобы повернуть фигуру.</p>
+
+    <div class="puzzle-container">
+      <!-- Левая область - исходные фигуры -->
+      <div class="puzzle-area" id="sourceArea">
+        <h3>Собрать домик в любом месте</h3>
+
+        <!-- Квадрат дома (повёрнут на 15°) -->
+        <div class="shape square" id="house" style="left: 30px; top: 120px; transform: rotate(15deg);" data-rotation="15">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <!-- Крыша (треугольник, повёрнут на -10°) -->
+        <div class="shape triangle-roof" id="roof" style="left: 150px; top: 180px; transform: rotate(-10deg);" data-rotation="-10">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <!-- Окно -->
+        <div class="shape rect-window" id="window" style="left: 300px; top: 200px; transform: rotate(25deg);" data-rotation="25">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <!-- Ёлка: 3 треугольника + ствол -->
+        <div class="shape triangle-tree-1" id="tree1" style="left: 120px; top: 50px; transform: rotate(8deg);" data-rotation="8">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <div class="shape triangle-tree-2" id="tree2" style="left: 200px; top: 80px; transform: rotate(-12deg);" data-rotation="-12">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <div class="shape triangle-tree-3" id="tree3" style="left: 50px; top: 200px; transform: rotate(5deg);" data-rotation="5">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <div class="shape rect-trunk" id="trunk" style="left: 320px; top: 120px; transform: rotate(-20deg);" data-rotation="-20">
+          <button class="rotate-btn">↻</button>
+        </div>
+
+        <div class="success-message">🎉 Отлично! Домик собран!</div>
+      </div>
+
+      <!-- Правая область - пример -->
+      <div class="puzzle-area" id="exampleArea" style="pointer-events: none; opacity: 0.7;">
+        <h3>Собрать домик в любом месте</h3>
+        <!-- Пример собранной картинки -->
+        <div class="shape triangle-tree-1" style="left: 80px; top: 80px; transform: rotate(0deg);"></div>
+        <div class="shape triangle-tree-2" style="left: 70px; top: 115px; transform: rotate(0deg);"></div>
+        <div class="shape triangle-tree-3" style="left: 60px; top: 160px; transform: rotate(0deg);"></div>
+        <div class="shape rect-trunk" style="left: 115px; top: 230px; transform: rotate(0deg);"></div>
+        
+        <div class="shape square" style="left: 260px; top: 180px; transform: rotate(0deg);"></div>
+        <div class="shape triangle-roof" style="left: 250px; top: 125px; transform: rotate(0deg);"></div>
+        <div class="shape rect-window" style="left: 287px; top: 207px; transform: rotate(0deg);"></div>
+      </div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">Начать заново</button>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; 2025 Учебный портал. Все права защищены.</p>
+  </div>
+</footer>
+
+<script>
+// ===== Drag & Drop без библиотек =====
+
+const shapes = document.querySelectorAll('#sourceArea .shape');
+const sourceArea = document.getElementById('sourceArea');
+let activeShape = null;
+let offsetX = 0;
+let offsetY = 0;
+
+// Начало перетаскивания
+shapes.forEach(shape => {
+  shape.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('rotate-btn')) return; // Игнорируем клик по кнопке
+
+    activeShape = shape;
+    const rect = shape.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    
+    shape.style.zIndex = 1000;
+    shape.style.cursor = 'grabbing';
+  });
+
+  // Поворот фигуры
+  const rotateBtn = shape.querySelector('.rotate-btn');
+  if (rotateBtn) {
+    rotateBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let currentRotation = parseInt(shape.dataset.rotation) || 0;
+      currentRotation += 45; // Поворот на 45°
+      if (currentRotation >= 360) currentRotation -= 360;
+      shape.dataset.rotation = currentRotation;
+      shape.style.transform = `rotate(${currentRotation}deg)`;
+      
+      checkWin(); // Проверяем после поворота
+    });
+  }
+});
+
+// Перемещение
+document.addEventListener('mousemove', (e) => {
+  if (!activeShape) return;
+
+  const areaRect = sourceArea.getBoundingClientRect();
+  let newX = e.clientX - areaRect.left - offsetX;
+  let newY = e.clientY - areaRect.top - offsetY;
+
+  // Ограничение внутри области
+  newX = Math.max(0, Math.min(newX, areaRect.width - activeShape.offsetWidth));
+  newY = Math.max(0, Math.min(newY, areaRect.height - activeShape.offsetHeight));
+
+  activeShape.style.left = newX + 'px';
+  activeShape.style.top = newY + 'px';
+});
+
+// Конец перетаскивания
+document.addEventListener('mouseup', () => {
+  if (activeShape) {
+    activeShape.style.zIndex = '';
+    activeShape.style.cursor = 'grab';
+    checkWin();
+    activeShape = null;
+  }
+});
+
+// Проверка победы (упрощённая: все фигуры повёрнуты на 0° или 360°)
+function checkWin() {
+  let allCorrect = true;
+  
+  shapes.forEach(shape => {
+    const rotation = parseInt(shape.dataset.rotation) || 0;
+    // Считаем правильным если угол 0° или кратен 360°
+    if (rotation % 360 !== 0) {
+      allCorrect = false;
+    }
+  });
+
+  if (allCorrect) {
+    sourceArea.classList.add('success');
+  } else {
+    sourceArea.classList.remove('success');
+  }
+}
+
+// Сброс
+document.getElementById('resetBtn').addEventListener('click', () => {
+  // Начальные позиции и углы
+  const initial = {
+    house: { left: 30, top: 120, rot: 15 },
+    roof: { left: 150, top: 180, rot: -10 },
+    window: { left: 300, top: 200, rot: 25 },
+    tree1: { left: 120, top: 50, rot: 8 },
+    tree2: { left: 200, top: 80, rot: -12 },
+    tree3: { left: 50, top: 200, rot: 5 },
+    trunk: { left: 320, top: 120, rot: -20 }
+  };
+
+  for (const [id, pos] of Object.entries(initial)) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.left = pos.left + 'px';
+      el.style.top = pos.top + 'px';
+      el.style.transform = `rotate(${pos.rot}deg)`;
+      el.dataset.rotation = pos.rot;
+    }
+  }
+
+  sourceArea.classList.remove('success');
+});
+</script>
+
+</body>
+</html>

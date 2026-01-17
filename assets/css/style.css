@@ -195,13 +195,18 @@ img {
 
 .tasks-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);    /* 3 равные колонки */
+    grid-template-columns: repeat(4, 1fr);    /* 3 равные колонки */
     gap: 16px;
     max-width: 1200px;                         /* ограничить ширину */
     margin: 0 auto;                            /* центрировать */
     align-items: start;
 }
-
+.puzzle-task {
+    background: #ffffff !important;
+    min-height: 100px;
+    display: block !important;
+    visibility: visible !important;
+}
 .task-card {
     background: #ffffff;
     border-radius: 10px;
