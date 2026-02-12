@@ -211,39 +211,38 @@
       <div class="puzzle-area" id="sourceArea">
         <h3>Собрать домик в любом месте</h3>
 
-        <!-- Квадрат дома (повёрнут на 15°) -->
-        <div class="shape square" id="house" style="left: 30px; top: 120px; transform: rotate(15deg);" data-rotation="15">
-          <button class="rotate-btn">↻</button>
-        </div>
+       <!-- Квадрат дома (повёрнут на 90°) -->
+<div class="shape square" id="house" style="left: 30px; top: 120px; transform: rotate(90deg);" data-rotation="45">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <!-- Крыша (треугольник, повёрнут на -10°) -->
-        <div class="shape triangle-roof" id="roof" style="left: 150px; top: 180px; transform: rotate(-10deg);" data-rotation="-10">
-          <button class="rotate-btn">↻</button>
-        </div>
+<!-- Крыша (треугольник, повёрнут на 90°) -->
+<div class="shape triangle-roof" id="roof" style="left: 150px; top: 180px; transform: rotate(90deg);" data-rotation="135">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <!-- Окно -->
-        <div class="shape rect-window" id="window" style="left: 300px; top: 200px; transform: rotate(25deg);" data-rotation="25">
-          <button class="rotate-btn">↻</button>
-        </div>
+<!-- Окно (повёрнуто на 90°) -->
+<div class="shape rect-window" id="window" style="left: 300px; top: 200px; transform: rotate(90deg);" data-rotation="90">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <!-- Ёлка: 3 треугольника + ствол -->
-        <div class="shape triangle-tree-1" id="tree1" style="left: 120px; top: 50px; transform: rotate(8deg);" data-rotation="8">
-          <button class="rotate-btn">↻</button>
-        </div>
+<!-- Ёлка: 3 треугольника (повёрнуты на 90°) -->
+<div class="shape triangle-tree-1" id="tree1" style="left: 120px; top: 50px; transform: rotate(90deg);" data-rotation="45">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <div class="shape triangle-tree-2" id="tree2" style="left: 200px; top: 80px; transform: rotate(-12deg);" data-rotation="-12">
-          <button class="rotate-btn">↻</button>
-        </div>
+<div class="shape triangle-tree-2" id="tree2" style="left: 200px; top: 80px; transform: rotate(90deg);" data-rotation="135">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <div class="shape triangle-tree-3" id="tree3" style="left: 50px; top: 200px; transform: rotate(5deg);" data-rotation="5">
-          <button class="rotate-btn">↻</button>
-        </div>
+<div class="shape triangle-tree-3" id="tree3" style="left: 50px; top: 200px; transform: rotate(90deg);" data-rotation="180">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <div class="shape rect-trunk" id="trunk" style="left: 320px; top: 120px; transform: rotate(-20deg);" data-rotation="-20">
-          <button class="rotate-btn">↻</button>
-        </div>
+<div class="shape rect-trunk" id="trunk" style="left: 320px; top: 120px; transform: rotate(90deg);" data-rotation="90">
+  <button class="rotate-btn">↻</button>
+</div>
 
-        <div class="success-message">🎉 Отлично! Домик собран!</div>
       </div>
 
       <!-- Правая область - пример -->
@@ -302,6 +301,7 @@ shapes.forEach(shape => {
       let currentRotation = parseInt(shape.dataset.rotation) || 0;
       currentRotation += 45; // Поворот на 45°
       if (currentRotation >= 360) currentRotation -= 360;
+      if (currentRotation < 0) currentRotation += 360;
       shape.dataset.rotation = currentRotation;
       shape.style.transform = `rotate(${currentRotation}deg)`;
       
@@ -313,6 +313,12 @@ shapes.forEach(shape => {
 // Перемещение
 document.addEventListener('mousemove', (e) => {
   if (!activeShape) return;
+  
+  // Если кнопка мыши отпущена — останавливаем перетаскивание
+  if (e.buttons === 0) {
+    stopDragging();
+    return;
+  }
 
   const areaRect = sourceArea.getBoundingClientRect();
   let newX = e.clientX - areaRect.left - offsetX;
@@ -326,32 +332,146 @@ document.addEventListener('mousemove', (e) => {
   activeShape.style.top = newY + 'px';
 });
 
-// Конец перетаскивания
-document.addEventListener('mouseup', () => {
+// Функция остановки перетаскивания
+function stopDragging() {
   if (activeShape) {
     activeShape.style.zIndex = '';
     activeShape.style.cursor = 'grab';
     checkWin();
     activeShape = null;
   }
-});
+}
+
+// Конец перетаскивания
+document.addEventListener('mouseup', stopDragging);
+window.addEventListener('mouseleave', stopDragging); // если курсор ушёл за пределы окна
+
+// Конец перетаскивания
+function stopDragging() {
+  if (activeShape) {
+    activeShape.style.zIndex = '';
+    activeShape.style.cursor = 'grab';
+    checkWin();
+    activeShape = null;
+  }
+}
+
+document.addEventListener('mouseup', stopDragging);
+document.addEventListener('mouseleave', stopDragging); // если курсор ушёл за пределы окна
+
+let winShown = false; // флаг чтобы показать только один раз
 
 // Проверка победы (упрощённая: все фигуры повёрнуты на 0° или 360°)
+// Проверка победы
 function checkWin() {
   let allCorrect = true;
   
+  // Зоны контейнера (примерные области)
+  const leftZone = { min: 0, max: 200 };      // левая часть (для ёлки)
+  const rightZone = { min: 200, max: 400 };   // правая часть (для домика)
+  
   shapes.forEach(shape => {
     const rotation = parseInt(shape.dataset.rotation) || 0;
-    // Считаем правильным если угол 0° или кратен 360°
-    if (rotation % 360 !== 0) {
+    const normalized = ((rotation % 360) + 360) % 360;
+    
+    // Проверка угла
+    let angleCorrect = false;
+    const currentLeft = parseInt(shape.style.left) || 0;
+    const currentTop = parseInt(shape.style.top) || 0;
+    
+    // Ствол (trunk) - на коротком ребре (0° или 180°)
+    if (shape.id === 'trunk') {
+      angleCorrect = (normalized <= 5 || (normalized >= 175 && normalized <= 185) || normalized >= 355);
+    }
+    // Квадраты и окна - на любой грани (0°, 90°, 180°, 270°)
+    else if (shape.classList.contains('square') || shape.classList.contains('rect-window')) {
+      angleCorrect = (normalized % 90 <= 2) || (normalized % 90 >= 88);
+    } 
+    // ВСЕ треугольники - на основании (0°) с допуском
+    else if (shape.classList.contains('triangle-roof') || 
+             shape.classList.contains('triangle-tree-1') || 
+             shape.classList.contains('triangle-tree-2') || 
+             shape.classList.contains('triangle-tree-3')) {
+      angleCorrect = (normalized <= 15 || normalized >= 345);
+    }
+    
+    // Проверка позиции
+    let positionCorrect = true;
+    
+    // Ствол - снизу слева
+    if (shape.id === 'trunk') {
+      positionCorrect = (currentLeft >= leftZone.min && currentLeft <= leftZone.max && currentTop >= 200);
+    }
+    // Ёлка - слева
+    else if (shape.id === 'tree1' || shape.id === 'tree2' || shape.id === 'tree3') {
+      positionCorrect = (currentLeft >= leftZone.min && currentLeft <= leftZone.max);
+    }
+    // Домик - справа
+    else if (shape.id === 'house' || shape.id === 'roof' || shape.id === 'window') {
+      positionCorrect = (currentLeft >= rightZone.min && currentLeft <= rightZone.max);
+    }
+    
+    if (!angleCorrect || !positionCorrect) {
       allCorrect = false;
     }
+  });
+  
+  // Дополнительная проверка: треугольники ёлки расположены правильно
+  if (allCorrect) {
+    const tree1 = document.getElementById('tree1');
+    const tree2 = document.getElementById('tree2');
+    const tree3 = document.getElementById('tree3');
+    
+    if (tree1 && tree2 && tree3) {
+      const pos1 = { 
+        left: parseInt(tree1.style.left) || 0, 
+        top: parseInt(tree1.style.top) || 0 
+      };
+      const pos2 = { 
+        left: parseInt(tree2.style.left) || 0, 
+        top: parseInt(tree2.style.top) || 0 
+      };
+      const pos3 = { 
+        left: parseInt(tree3.style.left) || 0, 
+        top: parseInt(tree3.style.top) || 0 
+      };
+      
+      // Проверка что они рядом по горизонтали (допуск ±40px)
+      const leftDiff12 = Math.abs(pos1.left - pos2.left);
+      const leftDiff23 = Math.abs(pos2.left - pos3.left);
+      const leftDiff13 = Math.abs(pos1.left - pos3.left);
+      const horizontalClose = (leftDiff12 <= 40 && leftDiff23 <= 40 && leftDiff13 <= 40);
+      
+      // Проверка вертикального порядка: tree1 (маленький) сверху, tree2 (средний) посередине, tree3 (большой) снизу
+      const verticalOrder = (pos1.top < pos2.top && pos2.top < pos3.top);
+      
+      // Проверка что они не слишком далеко друг от друга по вертикали (максимум 80px между соседними)
+      const verticalDistance12 = Math.abs(pos2.top - pos1.top);
+      const verticalDistance23 = Math.abs(pos3.top - pos2.top);
+      const verticalClose = (verticalDistance12 <= 80 && verticalDistance23 <= 80);
+      
+      if (!horizontalClose || !verticalOrder || !verticalClose) {
+        allCorrect = false;
+      }
+    }
+  }
+  
+  // ОТЛАДКА
+  console.log('Проверка победы:', {
+    allCorrect,
+    shapes: shapes.length
   });
 
   if (allCorrect) {
     sourceArea.classList.add('success');
+    
+    if (!winShown) {
+      alert('🎉 Поздравляем! Вы победили!');
+      winShown = true;
+    }
   } else {
     sourceArea.classList.remove('success');
+    winShown = false;
   }
 }
 
@@ -359,14 +479,14 @@ function checkWin() {
 document.getElementById('resetBtn').addEventListener('click', () => {
   // Начальные позиции и углы
   const initial = {
-    house: { left: 30, top: 120, rot: 15 },
-    roof: { left: 150, top: 180, rot: -10 },
-    window: { left: 300, top: 200, rot: 25 },
-    tree1: { left: 120, top: 50, rot: 8 },
-    tree2: { left: 200, top: 80, rot: -12 },
-    tree3: { left: 50, top: 200, rot: 5 },
-    trunk: { left: 320, top: 120, rot: -20 }
-  };
+  house: { left: 30, top: 120, rot: 90 },
+  roof: { left: 150, top: 180, rot: 90 },
+  window: { left: 300, top: 200, rot: 90 },
+  tree1: { left: 120, top: 50, rot: 90 },
+  tree2: { left: 200, top: 80, rot: 90 },
+  tree3: { left: 50, top: 200, rot: 90 },
+  trunk: { left: 320, top: 120, rot: 90 }
+};
 
   for (const [id, pos] of Object.entries(initial)) {
     const el = document.getElementById(id);
